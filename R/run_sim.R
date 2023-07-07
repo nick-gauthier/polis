@@ -41,8 +41,11 @@ run_sim_1 <- function(net, alpha1, alpha2, beta1, beta2, nu, rmax, n_nodes, step
     dplyr::select(-c(trade_utility, migrant_utility)) |>
     tidygraph::activate('nodes')
 
-  # stop the simulation if all hexes have been at equilibrium for more than 100 years
-  if(sum(pull(new_net, eq) >= 100) < n_nodes){
+  # stop the simulation if all hexes have been at equilibrium for more than 10 years
+  if(sum(pull(new_net, eq) >= 10) < n_nodes){
     return(new_net)
-  } else return(done(new_net))
+  } else {
+    message(paste0('The simulation has reached equilibrium at time step ', step - 10))
+    return(done(new_net))
+  }
 }
